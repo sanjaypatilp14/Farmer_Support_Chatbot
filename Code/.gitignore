@@ -35,12 +35,12 @@ __pycache__/
 *.pyd
 .env
 
-# Audio outputs (from eSpeak)
-*.wav
+# # Audio outputs (from eSpeak)
+# *.wav
 
 # Model-related large files
-*.h5
-*.pkl
+# *.h5
+# *.pkl
 
 # -------------------------------
 # 🧩 General
