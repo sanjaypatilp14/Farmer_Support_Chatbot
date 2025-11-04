@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import send_svg from './assets/send.svg';
 import mic_svg from './assets/mic.svg';
 import speaker_svg from './assets/speaker.svg';
-import file_svg from './assets/file.svg'; 
+// import file_svg from './assets/file.svg'; 
 import backgroundPhoto from './assets/bg.jpeg';
 import gif from './assets/farm.gif';
 import { TransformedItems } from './dropdown';
@@ -256,12 +256,12 @@ const App = () => {
               <img className='w-7' src={send_svg} alt='Send' />
             </button>
 
-            <button
+            {/* <button
               className='text-2xl bg-green-400 py-2 px-2 flex justify-center items-center rounded-full font-bebas ml-2'
               onClick={() => window.open('https://adil200.github.io/Farmer-Schemes/', '_blank')}
             >
               <img className='w-7' src={file_svg} alt='File' />
-            </button>
+            </button> */}
 
             <button
               className='text-2xl bg-purple-400 py-2 px-2 flex justify-center items-center rounded-full font-bebas ml-2'
