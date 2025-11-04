@@ -30,7 +30,7 @@ const App = () => {
     { label: 'Kannada', value: 'kn' },
     { label: 'Hindi', value: 'hi' },
     { label: 'Telugu', value: 'te' },
-    { label: 'Malayalam', value: 'ml' },
+   
     { label: 'Tamil', value: 'ta' }
   ];
 
@@ -48,21 +48,66 @@ const App = () => {
     setText('');
   };
 
-  // Setting up event listeners for receiving messages from the server
-  useEffect(() => {
-    socket.on('recv_message', (data) => {
-      let temp = {
-        message: data,
-        self: false
-      };
-      setChatMessage((prev) => [...prev, temp]);
-    });
+  // // Setting up event listeners for receiving messages from the server
+  // useEffect(() => {
+  //   socket.on('recv_message', (data) => {
+  //     let temp = {
+  //       message: data,
+  //       self: false
+  //     };
+  //     setChatMessage((prev) => [...prev, temp]);
+  //   });
 
-    // Cleanup function to remove the event listener when the component unmounts
-    return () => {
-      socket.off('recv_message');
+  //   // Cleanup function to remove the event listener when the component unmounts
+  //   return () => {
+  //     socket.off('recv_message');
+  //   };
+  // }, []);
+//Added here 
+   useEffect(() => {
+  socket.on('recv_message', async (data) => {
+    // Add received message to chat
+    let temp = {
+      message: data.text || data,  // handle old format
+      self: false
     };
-  }, []);
+    setChatMessage((prev) => [...prev, temp]);
+
+    // Get language and text
+    const lang = data.lang || selectedLanguage;
+    const text = data.text || data;
+
+    // 🎯 Logic for voice playback
+    if (lang === 'en' || lang === 'hi') {
+      // Use Windows / browser voices for English & Hindi
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = lang === 'hi' ? 'hi-IN' : 'en-IN';
+      utter.rate = 1;
+      utter.pitch = 1;
+      window.speechSynthesis.speak(utter);
+    } else if (lang === 'kn' || lang === 'te') {
+      // Use Flask eSpeak voice for Kannada & Telugu
+      const encodedText = encodeURIComponent(text);
+      const audio = new Audio(`http://127.0.0.1:5000/speak/${lang}/${encodedText}`);
+      audio.play();
+    } else {
+      // Default fallback voice
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'en-IN';
+      window.speechSynthesis.speak(utter);
+    }
+  });
+
+  // Cleanup
+  return () => {
+    socket.off('recv_message');
+  };
+}, [selectedLanguage]);
+
+//till here
+
+
+
 
   // Automatically scrolling to the bottom of the chat window when new messages arrive
   useEffect(() => {
@@ -141,7 +186,7 @@ const App = () => {
         </div>
 
         <div className="flex flex-col items-center font-bebas mt-2 text-lg lg:text-2xl">
-          <h2>Farmer Support Chatbot</h2>
+          <h2>SMART-VOICE ACTIVATED FARMING ASSISTANT</h2>
         </div>
         <center>
         <div className="flex items-center justify-between  w-full px-4 mt-4">
@@ -166,9 +211,9 @@ const App = () => {
       <div id='back-ball-2' className='absolute rounded-full bg-sky-400/50'></div>
       <div id='backdrop' className='w-screen h-screen fixed z-10'></div>
 
-      <div className="flex flex-col h-3/4 w-4/5 xl:w-2/4 bg-black/40 backdrop-blur-md z-20 rounded-3xl border-2 border-zinc-900/50">
+      <div className="flex flex-col h-3/4 w-11/12 xl:w-3/4 bg-black/40 backdrop-blur-md z-20 rounded-3xl border-2 border-zinc-900/50">
         <div className="heading py-2 px-8 flex items-center border-b-2 border-zinc-500/30">
-          <p className='ml-4 text-2xl font-anton'>FarmBot</p>
+          <p className='ml-4 text-2xl font-anton'>Farming Assistant</p>
         </div>
 
         <div id='chatscreen' className="flex flex-col w-full h-full overflow-auto px-8 py-5">
