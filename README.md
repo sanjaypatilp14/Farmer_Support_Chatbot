@@ -2,7 +2,7 @@
   -Install Docker Desktop on your Machine
   - Start the Docker Engine
   - Run this command --> docker compose build
-  -Run this command--> docker compose up
+  - Run this command--> docker compose up
 
 # Farmer Support ChatBot
 
