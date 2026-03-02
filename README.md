@@ -1,4 +1,8 @@
-
+# Instructions to run this application
+  1.Install Docker Desktop on your Machine
+  2. Start the Docker Engine
+  3.Run this command --> docker compose build
+  4.Run this command--> docker compose up
 
 # Farmer Support ChatBot
 
